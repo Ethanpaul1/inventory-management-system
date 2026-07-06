@@ -5,7 +5,7 @@ HEADERS = {"User-Agent": "InventoryManagementApp/1.0 (student project)"}
 
 
 def fetch_product_by_barcode(barcode):
-    """Return a normalized product record from OpenFoodFacts for a barcode."""
+    """Get one product from OpenFoodFacts using its barcode."""
     url = f"{BASE_URL}/product/{barcode}.json"
     response = requests.get(url, headers=HEADERS, timeout=5)
 
@@ -27,7 +27,7 @@ def fetch_product_by_barcode(barcode):
 
 
 def fetch_product_by_name(name):
-    """Return the first normalized OpenFoodFacts search result for a name."""
+    """Search OpenFoodFacts by name and return the first result."""
     url = "https://search.openfoodfacts.org/search"
     params = {
         "q": name,

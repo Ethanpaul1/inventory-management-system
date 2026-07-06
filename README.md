@@ -1,73 +1,83 @@
 # Inventory Management System
 
-A Python Flask REST API for managing inventory items. The project includes CRUD endpoints, helper routes for OpenFoodFacts product lookup/import, a command-line interface, and a pytest suite covering the API, external API helpers, and CLI behavior.
+This is a small Flask REST API for keeping track of inventory items. It stores data in a Python list, so it is meant for the lab project and testing, not for production use.
 
-## Features
+The project also has a simple command line tool and an OpenFoodFacts lookup/import feature.
 
-- Flask routes for inventory CRUD operations.
-- External API integration with OpenFoodFacts.
-- CLI commands for listing, viewing, creating, updating, deleting, searching, and importing products.
-- Mocked pytest coverage for the Flask app, API client, and CLI.
-- Git-ready structure with Python cache files, virtual environments, and local environment files ignored.
+## What It Does
 
-## Installation and Setup
+- Lists inventory items.
+- Adds new items.
+- Updates item details with `PATCH`.
+- Deletes items.
+- Looks up products from OpenFoodFacts by barcode or name.
+- Imports a product from OpenFoodFacts into the inventory list.
+- Includes tests for the API routes, external API helper functions, and CLI functions.
 
-1. Clone the repository:
+## Setup
 
-   ```bash
-   git clone <your-github-repo-url>
-   cd inventory-management-system
-   ```
+Clone the project and move into the folder:
 
-2. Create and activate a virtual environment:
+```bash
+git clone https://github.com/Ethanpaul1/inventory-management-system.git
+cd inventory-management-system
+```
 
-   ```bash
-   python -m venv venv
-   venv\Scripts\activate
-   ```
+Create and activate a virtual environment:
 
-   On macOS/Linux:
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
 
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
+On macOS/Linux:
 
-3. Install dependencies:
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+Install the requirements:
 
-4. Run the Flask API:
+```bash
+pip install -r requirements.txt
+```
 
-   ```bash
-   python app.py
-   ```
+Run the Flask app:
 
-   The API runs at `http://127.0.0.1:5000`.
+```bash
+python app.py
+```
 
-5. Run the test suite:
+The API runs at:
 
-   ```bash
-   pytest
-   ```
+```text
+http://127.0.0.1:5000
+```
+
+Run the tests:
+
+```bash
+pytest
+```
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
+| Method | Endpoint | What it does |
 | --- | --- | --- |
-| `GET` | `/inventory` | List all inventory items. |
-| `GET` | `/inventory/<item_id>` | Get one item by ID. |
-| `POST` | `/inventory` | Create a new inventory item. |
-| `PATCH` | `/inventory/<item_id>` | Update selected fields for an item. |
-| `DELETE` | `/inventory/<item_id>` | Delete an item. |
-| `GET` | `/inventory/lookup?barcode=<barcode>` | Search OpenFoodFacts by barcode. |
-| `GET` | `/inventory/lookup?name=<name>` | Search OpenFoodFacts by product name. |
-| `POST` | `/inventory/import?barcode=<barcode>` | Import a product from OpenFoodFacts by barcode. |
-| `POST` | `/inventory/import?name=<name>` | Import a product from OpenFoodFacts by name. |
+| `GET` | `/inventory` | Gets all inventory items. |
+| `GET` | `/inventory/<item_id>` | Gets one item by ID. |
+| `POST` | `/inventory` | Adds a new item. |
+| `PATCH` | `/inventory/<item_id>` | Updates part of an item. |
+| `DELETE` | `/inventory/<item_id>` | Deletes an item. |
+| `GET` | `/inventory/lookup?barcode=<barcode>` | Looks up an OpenFoodFacts product by barcode. |
+| `GET` | `/inventory/lookup?name=<name>` | Looks up an OpenFoodFacts product by name. |
+| `POST` | `/inventory/import?barcode=<barcode>` | Imports an OpenFoodFacts product by barcode. |
+| `POST` | `/inventory/import?name=<name>` | Imports an OpenFoodFacts product by name. |
 
-### Create Item Example
+## Example API Requests
+
+Add an item:
 
 ```bash
 curl -X POST http://127.0.0.1:5000/inventory ^
@@ -75,7 +85,7 @@ curl -X POST http://127.0.0.1:5000/inventory ^
   -d "{\"name\":\"Rice\",\"price\":3.99,\"stock\":12,\"brand\":\"Store Brand\",\"category\":\"Pantry\"}"
 ```
 
-### Update Item Example
+Update an item:
 
 ```bash
 curl -X PATCH http://127.0.0.1:5000/inventory/1 ^
@@ -83,9 +93,15 @@ curl -X PATCH http://127.0.0.1:5000/inventory/1 ^
   -d "{\"stock\":25}"
 ```
 
-## CLI Usage
+Import a product by barcode:
 
-Start the Flask server in one terminal before running CLI commands in another terminal.
+```bash
+curl -X POST "http://127.0.0.1:5000/inventory/import?barcode=0016000275867"
+```
+
+## CLI Examples
+
+Start the Flask app first, then run these from another terminal:
 
 ```bash
 python cli.py list
@@ -99,37 +115,28 @@ python cli.py import barcode 0016000275867
 python cli.py import name "peanut butter"
 ```
 
-## Project Structure
+## Project Files
 
 ```text
-inventory-management-system/
-  app.py              # Flask routes and in-memory inventory data
-  api_client.py       # OpenFoodFacts integration helpers
-  cli.py              # Command-line interface for the API
-  tests/test_app.py   # API, external API helper, and CLI tests
-  requirements.txt    # Python dependencies
-  README.md           # Project documentation
+app.py              Flask routes and inventory list
+api_client.py       OpenFoodFacts helper functions
+cli.py              Command line commands
+tests/test_app.py   Tests for the app, API helpers, and CLI
+requirements.txt    Project dependencies
+README.md           Project instructions
 ```
 
-## Git Workflow Evidence
+## Git Workflow
 
-For the Git Management rubric, use a feature branch for new work, open a pull request on GitHub, merge it into `main`, and delete the branch after merge.
+For new changes, I used feature branches, opened pull requests into `main`, merged them, and deleted the feature branches after merging.
 
-This repository includes feature branch history created for grading evidence.
-
-Recommended workflow for this README/docs feature:
+Example workflow:
 
 ```bash
 git switch -c feature/readme-docs
-git add README.md cli.py api_client.py tests/test_app.py .gitignore
-git commit -m "Add README documentation and CLI import command"
+git add README.md
+git commit -m "Add README documentation"
 git push -u origin feature/readme-docs
 ```
 
-Then open a pull request from `feature/readme-docs` into `main`, merge it, and delete the feature branch on GitHub.
-
-## Maintainability Notes
-
-- Route functions keep validation close to the endpoint that needs it.
-- `api_client.py` normalizes OpenFoodFacts responses so the Flask routes do not depend on the external API's full response shape.
-- Tests mock external HTTP calls, keeping the suite fast and reliable.
+Then the branch can be opened as a pull request on GitHub and merged into `main`.

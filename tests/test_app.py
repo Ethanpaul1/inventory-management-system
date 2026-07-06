@@ -8,7 +8,7 @@ import cli
 @pytest.fixture
 def client():
     app_module.app.config["TESTING"] = True
-    # Reset inventory before each test so tests don't leak into each other
+    # Start each test with the same inventory data.
     app_module.inventory.clear()
     app_module.inventory.append({
         "id": 1, "name": "Test Item", "barcode": "123",
@@ -19,9 +19,7 @@ def client():
         yield c
 
 
-# ============================================================
-# SECTION 1: API ENDPOINT TESTS (Flask routes / CRUD)
-# ============================================================
+# API route tests
 
 def test_get_all_items(client):
     response = client.get("/inventory")
@@ -92,7 +90,6 @@ def test_import_product(mock_fetch, client):
     response = client.post("/inventory/import?barcode=111")
     assert response.status_code == 201
     assert response.get_json()["name"] == "Mock Soup"
-    # confirm it actually landed in the inventory list
     assert len(app_module.inventory) == 2
 
 
@@ -105,9 +102,7 @@ def test_import_product_by_name(mock_fetch, client):
     assert len(app_module.inventory) == 2
 
 
-# ============================================================
-# SECTION 2: HELPER / EXTERNAL API TESTS (api_client.py, mocked)
-# ============================================================
+# External API helper tests
 
 @patch("api_client.requests.get")
 def test_fetch_product_by_barcode_success(mock_get):
@@ -154,9 +149,7 @@ def test_fetch_product_by_name_no_results(mock_get):
     assert result is None
 
 
-# ============================================================
-# SECTION 3: CLI TESTS (cli.py, mocked HTTP calls)
-# ============================================================
+# CLI tests
 
 @patch("cli.requests.get")
 def test_cli_list_items(mock_get, capsys):
