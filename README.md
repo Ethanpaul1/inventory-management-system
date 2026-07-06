@@ -75,6 +75,23 @@ pytest
 | `POST` | `/inventory/import?barcode=<barcode>` | Imports an OpenFoodFacts product by barcode. |
 | `POST` | `/inventory/import?name=<name>` | Imports an OpenFoodFacts product by name. |
 
+## How The Project Works
+
+The main file is `app.py`. It creates the Flask app, stores the inventory list, and defines the routes. Each route handles one job:
+
+- `GET` routes read data.
+- `POST /inventory` adds a new item from JSON.
+- `PATCH /inventory/<item_id>` changes only the fields that are sent.
+- `DELETE /inventory/<item_id>` removes an item from the list.
+- `/inventory/lookup` searches OpenFoodFacts but does not save the result.
+- `/inventory/import` searches OpenFoodFacts and then saves the result in the inventory list.
+
+The `api_client.py` file keeps the OpenFoodFacts code separate from the Flask routes. That makes the routes easier to read, and it also makes the external API easier to test with mocks.
+
+The `cli.py` file is a small command line client. It does not store data by itself. It sends HTTP requests to the Flask API, so the Flask app needs to be running before the CLI commands are used.
+
+The tests in `tests/test_app.py` use Flask's test client for the routes and `unittest.mock.patch` for external requests. This means the tests do not depend on the real OpenFoodFacts website being online.
+
 ## Example API Requests
 
 Add an item:
