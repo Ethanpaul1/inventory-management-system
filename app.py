@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-# Mock "database" — a list of dicts. Each item MUST have an id.
+# For this lab, the inventory is stored in a list instead of a real database.
 inventory = [
     {
         "id": 1,
@@ -16,11 +16,11 @@ inventory = [
     }
 ]
 
-next_id = 2  # simple counter to hand out new ids
+next_id = 2
 
 
 def find_item(item_id):
-    """Helper: returns the item dict with this id, or None."""
+    """Find one item by id."""
     for item in inventory:
         if item["id"] == item_id:
             return item
@@ -72,7 +72,6 @@ def update_item(item_id):
     if not data:
         return jsonify({"error": "No update data provided"}), 400
 
-    # Only update fields that were actually sent
     for key in ["name", "barcode", "price", "stock", "brand", "category"]:
         if key in data:
             item[key] = data[key]
