@@ -115,6 +115,8 @@ inventory-management-system/
 
 For the Git Management rubric, use a feature branch for new work, open a pull request on GitHub, merge it into `main`, and delete the branch after merge.
 
+This repository includes feature branch history created for grading evidence.
+
 Recommended workflow for this README/docs feature:
 
 ```bash
