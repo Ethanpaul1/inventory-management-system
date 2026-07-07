@@ -159,3 +159,8 @@ git push -u origin feature/readme-docs
 ```
 
 Then the branch can be opened as a pull request on GitHub and merged into `main`.
+
+## Known Limitations
+
+- Inventory data is stored in-memory (a Python list), so it resets every time the Flask server restarts. A production version would use a persistent database like SQLite or PostgreSQL.
+- The external API integration depends on OpenFoodFacts' uptime and rate limits.
