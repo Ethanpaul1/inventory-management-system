@@ -147,6 +147,8 @@ README.md           Project instructions
 
 For new changes, I used feature branches, opened pull requests into `main`, merged them, and deleted the feature branches after merging.
 
+To make that workflow concrete in the repository history, I created a feature branch, merged it into `main`, and then removed the temporary branch after the merge.
+
 Example workflow:
 
 ```bash
